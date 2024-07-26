@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Shhh... Chatbot</title>
+{% endblock %}
+
+{% block body %}
+
+<div id="chatbot-container">
+    <div id="sidebar">
+        marv
+    </div>
+    <div id="main">
+        <div id="message-container">
+            <div id="assistant-response">
+                <div>
+                    <div class="sender">Chatbot (Marv):</div>
+                    <div class="message"> Hi there! I am Marv. How can I assist you today? lore</div>
+                </div>
+            </div>
+
+            <div id="user-response">
+                <div>
+                    <div class="sender">You:</div>
+                    <div class="message"> Hello Marv, I am experiencing some symptoms can you help me out?</div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="input-container">
+            <input type="text" placeholder="Type your response here.." value="" />
+            <input type="submit" name="submit" value="send" />
+            <!-- <div>send</div> -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+

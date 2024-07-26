@@ -1,0 +1,137 @@
+{% extends 'base.html' %} {% block head %}
+<title>Shhh... Chatbot</title>
+{% endblock %} {% block body %}
+
+<div id="chatbot-container">
+  <div id="sidebar">Joe</div>
+  <div id="main">
+    <div id="message-container"></div>
+  </div>
+</div>
+
+<script>
+  const selectedValues = {};
+  count = 1;
+  let questionsetLength;
+  function fetch_questions_response() {
+    const response = fetch("/get_options", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // if(count <= data.length){ Instead of passing it in here; if <= data.length then creat div called "Finish"
+          questionsetLength = data.length;
+          const questionset = data.question_options[count];
+          const botMessageDiv = document.createElement("div");
+          botMessageDiv.innerHTML = `
+                  <div id="assistant-response">
+                      <div>
+                          <div class="sender">Chatbot (Marv):</div>
+                          <div class="message">${questionset.question}</div>
+                      </div>
+                  </div>
+              `;
+          document.getElementById("message-container").appendChild(botMessageDiv);
+
+          // display options
+          if (questionset.answer) {
+            var inputType = "";
+            if(questionset.question === "What are the symptoms you are experiencing? Select all that apply"){
+              inputType = "checkbox";
+            }else{
+              inputType = "radio";
+            }
+
+            const newOptionsMessageDiv = document.createElement("div");
+            newOptionsMessageDiv.classList.add("user-response");
+            newOptionsMessageDiv.id = "user-response-no" + count;
+            newOptionsMessageDiv.innerHTML = `<div><div class="sender">You:</div><form class="message"></form></div>`;
+
+            questionset.answer.forEach((option) => {
+              const newOptionsInput = document.createElement("input");
+              newOptionsInput.type = inputType;
+              newOptionsInput.value = option;
+              newOptionsInput.name = "options";
+              const label = document.createElement("label");
+              label.appendChild(newOptionsInput);
+              label.appendChild(document.createTextNode(option));
+              newOptionsMessageDiv.querySelector(".message").appendChild(label);
+              // console.log(newOptionsInput.value);
+            });
+            
+            const nextQuestionBtn = document.createElement("div");
+            if(count < data.length){
+              nextQuestionBtn.innerHTML = "Next";
+              
+            }else{
+              nextQuestionBtn.innerHTML = "Finish & Submit";
+              // nextQuestionBtn.onclick = () => fetchResponse(selectedValues);
+            }
+            nextQuestionBtn.onclick = () => checkboxvalue(newOptionsMessageDiv.id);
+            // onclick = () => fetchResponse(option);
+            newOptionsMessageDiv.querySelector(".message").appendChild(nextQuestionBtn);
+            document.getElementById("message-container").appendChild(newOptionsMessageDiv);
+            document.getElementById("message-container").scrollTop = document.getElementById("message-container").scrollHeight;
+          }
+        // }
+      });
+  }
+
+  function checkboxvalue(newOptionsMessageDivId) {
+    let selectedOption = document.querySelector(`#${newOptionsMessageDivId} input[name="options"]:checked`);
+    const messageContainer = document.querySelector(`#${newOptionsMessageDivId} .message`);
+    
+    if (selectedOption) {
+      if(selectedOption.type === "checkbox" ){
+        const symptoms = [];
+        selectedOption = document.querySelectorAll(`#${newOptionsMessageDivId} input[name="options"]:checked`);
+        selectedOption.forEach((option) => {
+          symptoms.push(option.value);
+        });
+        selectedOption.value = symptoms;
+      }
+      const questionIndex = count;
+      const selectedValue = selectedOption.value;
+      selectedValues["q"+questionIndex] = selectedValue;
+
+      if(count<questionsetLength){
+        count++;
+        fetch_questions_response();
+      }else{
+        fetchResponse(selectedValues)
+      }
+      messageContainer.innerHTML = selectedValue;
+    } else {
+      alert("Please select an option.");
+    }
+  }
+
+  function fetchResponse(selectedValues) {
+    console.log(selectedValues)
+    fetch("/get_response", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({"selectedValues": selectedValues}),
+    }).then((response) => response.json()).then(data => {
+      console.log(data);
+      const botMessageDiv = document.createElement("div");
+          botMessageDiv.innerHTML = `
+                  <div id="assistant-response" class="final-response">
+                      <div>
+                          <div class="sender">Chatbot (Marv):</div>
+                          <div class="message">${data.response}</div>
+                      </div>
+                  </div>
+              `;
+          document.getElementById("message-container").appendChild(botMessageDiv);
+
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    fetch_questions_response();
+  });
+
+</script>
+{% endblock %}

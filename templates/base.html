@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    {% block head %} {% endblock %}
+</head>
+<body>
+  <div class="header">
+    Shhh... Menopausal Coach
+  </div>
+    {% block body %} {% endblock %}
+</body>
+</html>

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Shhh... Menopasal Coach</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="consultaion-section">
+    
+    <form method="POST" action="/book_consultation">
+        <div> Consultation Form</div>
+        {%if errmessage %}
+            <p class="errormessage">{{errmessage}}</p>
+        {% endif %}
+
+        <input type="text" name="Fullname" placeholder="Enter your fullname" />
+        <input type="email" name="email" placeholder="Enter your email address" />
+        <input type="text" name="purpose" placeholder="Enter Purpose and concerns" />
+        <input type="date" name="appointmentDate" />
+        <select name="time" id="cars">
+            <option value="Select Time:">Select Time: </option>
+            <option value="9am - 10am">9am - 10am</option>
+            <option value="11am - 12am">11am - 12am</option>
+            <option value="1pm - 2pm">1pm - 2pm</option>
+            <option value="2pm - 3pm">2pm - 3pm</option>
+            <option value="3pm - 4pm">3pm - 4pm</option>
+            <option value="4pm - 5pm">4pm - 5pm</option>
+        </select>
+        <input type="submit" name="submit" />
+    </form>
+</div>
+<script>
+    console.log()
+</script>
+{% endblock %}
+
+<!-- {"messages": [
+    {"role": "system", "content": "Your name is Joe. Joe is a menopausal consultant and coach."},
+    {"role": "user", "content": "Hi Joe, I am 60 and Over years old and I have not seen my menstral cycle for over 12 months. I am experiencing some menopausal symptoms such as Sleep and need advice."},
+    {"role": "assistant", "content": "Great! Based on your responses, I would recommend our product, Sleep Sound H2O. This spray combines the calming effects of essential oils with the relaxing properties of magnesium, helping to promote better sleep quality.\n\nWould you like to order this product?\n1. Yes\n2. No", "weight": 1},
+]} -->

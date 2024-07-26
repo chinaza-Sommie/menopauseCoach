@@ -1,0 +1,266 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    /* background-color: #dcc6e4; */
+    background-color:#dcc6e49c;
+}
+
+.header{
+    background-color: #3b3d6c;
+    color: white;
+    padding: 15px 0;
+    font-size: 20px;
+    text-align: center;
+}
+
+.heroSection{
+    display: flex;
+    margin: 0 15%;
+    margin-top: 5%;
+}
+.heroSection>div{
+    width: 100%;
+}
+
+.heroText{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    color: #3b3d6c;
+}
+
+#italicText{
+    font-style: italic;
+}
+
+#boldText{
+    text-transform: uppercase;
+}
+
+.heroText a{
+    display: block;
+    border: 1px solid #3b3d6c;
+    background-color: #3b3d6c;
+    color: white;
+    font-size: 23px;
+    text-decoration: none;
+    margin-top: 5%;
+    padding: 5px 15px;
+    border-radius: 6px;
+    transition: .5s ease;
+}
+
+.heroText a:hover{
+    box-shadow: 5px 5px 5px grey;
+}
+
+/* chatbot section */
+#chatbot-container{
+    display: flex;
+    height: 91.1vh;
+}
+
+#sidebar{
+    width: 20%;
+    background-color: #3b3d6c;
+    color: white;
+    padding-top: 10%;
+    text-align: center;
+    text-transform: capitalize;
+    font-style: italic;
+    font-size: 30px;
+}
+
+#main{
+    width: 80%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 1px solid black;
+}
+
+#input-container{
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background-color: #3b3d6c;
+}
+
+#input-container input[type='text']{
+    width: 90%;
+    margin-right: 10px;
+    outline: none;
+    border:none;
+    background-color: #E9DCEE;
+    padding: 10px;
+    border-radius: 6px;
+    color: black;
+    font-size: 16px;
+}
+
+#input-container div{
+    width: 10%;
+    border: 1px solid #3b3d6c;
+}
+
+#input-container ::placeholder{
+    color: black;
+    font-style: italic;
+}
+
+#input-container input[type='submit'],
+.consultaion-section input[type='submit']{
+    background-color: #E9DCEE;
+    color: #3b3d6c;
+    font-size: 16px;
+    border-radius: 6px;
+    padding: 10px 15px;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 700;
+    outline: none;
+    border: none;
+}
+
+#input-container input[type='submit']:hover{
+    cursor: pointer;
+}
+
+#message-container{
+    /* height: calc(100% - 80px);  */
+    overflow-y: auto;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+#assistant-response,
+.user-response{
+    display: flex;
+}
+
+.user-response{
+    justify-content: end;
+}
+
+#assistant-response>div,
+.user-response>div{
+    background-color: #a1a4e7;
+    color: #090b3a;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.user-response>div{
+    background-color: #3b3d6c;
+    color: white;
+    width: 25%;
+    /* text-align: right; */
+}
+#assistant-response>div .sender,
+.user-response>div .sender{
+    font-size: 15px;
+    font-style: italic;
+    margin-bottom: 10px;
+}
+
+.final-response{
+    width: 60%;
+}
+
+.consultaion-section{
+    display: flex;
+    justify-content: center;
+    padding-top: 5%;
+}
+
+.consultaion-section form{
+    border: 1px solid grey;
+    width: 30%;
+    padding: 10px 20px;
+    border-radius: 6px;
+    box-shadow: 5px 5px 5px grey;
+}
+.consultaion-section form input,
+.consultaion-section form select{
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    font-size: 16px;
+    background-color: inherit;
+    border-radius: 6px;
+    outline: none;
+    border: 1px solid grey;
+}
+.consultaion-section form div{
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.consultaion-section form select option{
+    padding: 50px 0;
+}
+.consultaion-section input[type='submit']{
+    background-color: #3b3d6c;
+    letter-spacing: 1px;
+    color: white;
+    margin: 20px 0;
+}
+.message>label{
+    background-color: white;
+    color: #090b3a;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    display: block;
+}
+.message>label>input[type="checkbox"],
+.message>label>input[type="radio"]{
+    text-align: center;
+    letter-spacing: 1px;
+    border: none;
+    outline: none;
+    margin-right: 5px;
+    /* display: block; */
+}
+
+.message>input[type="checkbox"]:hover{
+    box-shadow: 5px 5px 5px;
+}
+
+.message>div{
+    padding: 10px;
+    text-align: center;
+    background-color: #a1a4e7;
+    font-size: 18px;
+    border-radius: 6px;
+    color: #090b3a;
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+/* Error Message */
+.errormessage{
+    text-align: center;
+    background-color: #ff0000ab;
+    color: white;
+    padding: 10px 0;
+    font-weight: 500;
+    margin: 10px 0;
+    border-radius: 6px;
+}
