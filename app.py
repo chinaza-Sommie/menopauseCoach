@@ -39,7 +39,8 @@ question_options = {
     2: {"question": "Can you describe you menstral cycle", "answer":  ["Regular like clock work", "Not Regular For under 12 months", "Not Regular For over 12 months", "Have not seen for over 12 months"]},
     3: {"question": "What are the symptoms you are experiencing? Select all that apply", "answer":  ["Fatigue","Hot Flushes","Sleep","Mood Swings","Restless Legs","Vaginal Dryness","Anxiety","Brain Fog","Depression","Dizzy Spells","Panic Disorders","Breast Pain","Cramps","Gut Health","Electric Shocks","Headaches","Joint Pain","Tension","Brittle Nails","Hair Thinning","Itchy Skin","Tingling","Allergies","Burning Tongue","Gum Issues","Osteoporosis"]},
     4: {"question": "What is your main concern", "answer":  ["Sleep", "Joint Pain", "Brain Fog", "Hot Flushes", "Intimacy"]},
-    5: {"question": "Do you like lavender?", "answer":  ["Yes", "No", "I do not know"]},
+    5: {"question": "Which of the following sleep problems are you facing?", "answer":  ["Having trouble getting to sleep", "I find myself waking up at night", "I sleep like a baby", "I get restless legs ", "I get Night Sweats "]},
+    6: {"question": "Do you like lavender?", "answer":  ["Yes", "No", "I do not know"]},
 }
 
 @app.route('/')
@@ -98,12 +99,14 @@ def get_options():
 def get_response():
     #prompt -- Hi Joe, I am 60 and Over years old and I have not seen my menstral cycle for over 12 months. I am experiencing some menopausal symptoms such as Sleep and need advice.
     selectedOptions = request.json.get("selectedValues")
-    user_message = f"Hi Joe, I am {selectedOptions['q1']} years old and I {selectedOptions['q2']}. I am experiencing some menopausal symptoms such as {selectedOptions['q3']} and need advice"
+    user_message = f"Hi Joe, I am {selectedOptions['q1']} and my menstrual cycle is {selectedOptions['q2']}. I am experiencing some menopausal symptoms such as {selectedOptions['q3']} and need advice. My main concern is {selectedOptions['q4']}. I am [Sleep Situation: Having trouble getting to sleep, Waking up at night, Sleeping like a baby] and I [Lavender Preference: Like lavender, Do not like lavender]"
+    # user_message = f"Hi Joe, I am {selectedOptions['q1']} years old and I {selectedOptions['q2']}. I am experiencing some menopausal symptoms such as {selectedOptions['q3']} and need advice"
     # user_message = "Hi Joe, I am",selectedOptions['q1']," years old and I ",selectedOptions['q2'],". I am experiencing some menopausal symptoms such as",selectedOptions['q3']," and need advice"
     messages.append({"role": "user", "content": user_message})
     
     response = client.chat.completions.create(
-        model="ft:gpt-3.5-turbo-0125:cader::9o4jRhwA",
+        # model="ft:gpt-3.5-turbo-0125:cader::9o4jRhwA",
+        model="ft:gpt-3.5-turbo-0125:cader::9pEoCI81",
         messages=messages,
         temperature=0.2
     )

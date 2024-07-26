@@ -27,7 +27,7 @@
           botMessageDiv.innerHTML = `
                   <div id="assistant-response">
                       <div>
-                          <div class="sender">Chatbot (Marv):</div>
+                          <div class="sender">Chatbot (Joe):</div>
                           <div class="message">${questionset.question}</div>
                       </div>
                   </div>
@@ -119,8 +119,15 @@
           botMessageDiv.innerHTML = `
                   <div id="assistant-response" class="final-response">
                       <div>
-                          <div class="sender">Chatbot (Marv):</div>
-                          <div class="message">${data.response}</div>
+                          <div class="sender">Chatbot (Joe):</div>
+                          <div class="message">${data.response}
+                            
+                          </div>
+                          <div class="clickto_order"><b>To book an Appointment, Click the button below</b><div>
+                          <div class="chatbot-selection-btns">
+                            
+                            <a href="/book_consultation"><div> BOOK AN APPOINTMENT</div></a>
+                          </div>
                       </div>
                   </div>
               `;

@@ -264,3 +264,26 @@ body{
     margin: 10px 0;
     border-radius: 6px;
 }
+
+.clickto_order{
+    margin: 10px 0;
+}
+
+.chatbot-selection-btns{
+    margin-top: 10px;
+}
+
+.chatbot-selection-btns div{
+    width: 50%;
+    background-color: #090b3a;
+    color: white;
+    text-align: center;
+    padding: 10px 1px;
+    border-radius: 6px;
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+.chatbot-selection-btns>a{
+    text-decoration: none;
+}
