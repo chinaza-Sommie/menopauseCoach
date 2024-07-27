@@ -97,30 +97,38 @@ def get_options():
 
 @app.route('/get_response', methods=['POST'])
 def get_response():
-    #prompt -- Hi Joe, I am 60 and Over years old and I have not seen my menstral cycle for over 12 months. I am experiencing some menopausal symptoms such as Sleep and need advice.
     selectedOptions = request.json.get("selectedValues")
-    user_message = f"Hi Joe, I am {selectedOptions['q1']} and my menstrual cycle is {selectedOptions['q2']}. I am experiencing some menopausal symptoms such as {selectedOptions['q3']} and need advice. My main concern is {selectedOptions['q4']}. I am [Sleep Situation: Having trouble getting to sleep, Waking up at night, Sleeping like a baby] and I [Lavender Preference: Like lavender, Do not like lavender]"
-    # user_message = f"Hi Joe, I am {selectedOptions['q1']} years old and I {selectedOptions['q2']}. I am experiencing some menopausal symptoms such as {selectedOptions['q3']} and need advice"
-    # user_message = "Hi Joe, I am",selectedOptions['q1']," years old and I ",selectedOptions['q2'],". I am experiencing some menopausal symptoms such as",selectedOptions['q3']," and need advice"
+    age = selectedOptions['q1']
+    menstrual_cycle = selectedOptions['q2']
+    symptoms = ', '.join(selectedOptions['q3'])
+    concern = selectedOptions['q4']
+    sleep_trouble = selectedOptions['q5']
+    lavender = selectedOptions['q6']
+
+    print(selectedOptions, symptoms)
+    user_message = f"Hi Joe, I am {age} and my menstrual cycle is {menstrual_cycle}. I am experiencing some menopausal symptoms such as {symptoms} and need advice. My main concern is {concern}. I am {sleep_trouble} and I {lavender}lavender"  
     messages.append({"role": "user", "content": user_message})
-    
+
     response = client.chat.completions.create(
         # model="ft:gpt-3.5-turbo-0125:cader::9o4jRhwA",
         model="ft:gpt-3.5-turbo-0125:cader::9pEoCI81",
-        messages=messages,
-        temperature=0.2
+        messages=messages
+        # temperature=0.2
     )
-    
-    # chatbot_response = response.choices[0].message['content']
-    chatbot_response = response.choices[0].message.content
-    messages.append({"role": "assistant", "content": chatbot_response})
-    print(user_message)
-    # return user_message
-    return jsonify({"response": chatbot_response})
 
-# @app.route('/booking', methods=['POST'])
-# def booking():
-#     return render_template("booking.html")
+    if response:
+        chatbot_response = response.choices[0].message.content
+        messages.append({"role": "assistant", "content": chatbot_response})
+
+        cursor = mysql.connection.cursor()
+        ressql = "INSERT INTO responses (question1_option, question2_option, question3_option, question4_option, question5_option, question6_option, chatbot_response,satisfactory_rate) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)"
+        values = (age,menstrual_cycle,symptoms, concern, sleep_trouble, lavender,chatbot_response, '')
+        response_success = cursor.execute(ressql, values)
+        mysql.connection.commit()
+        cursor.close()
+        
+        print("data has been inserted successfully")
+        return jsonify({"response": chatbot_response})
 
 
 if __name__ == '__main__':
