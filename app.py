@@ -20,15 +20,17 @@ mysql = MySQL(app)
 # mail configuration
 # mail_username = os.getenv('MAIL_PASSWORD')
 # mail_password = os.environ.get('MAIL_PASSWORD')
-# app.config['MAIL_SERVER'] = "smtp.gmail.com"
-# app.config['MAIL_PORT'] = 465
-# app.config['MAIL_USE_SSL'] = True
-# # app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
-# app.config['MAIL_USERNAME'] = "nazachi738@gmail.com"
-# app.config['MAIL_PASSWORD'] = 
-# app.config['MAIL_DEFAULT_SENDER'] = "nazachi738@gmail.com"
-# mail = Mail(app)
+app.config['MAIL_SERVER'] = "smtp-relay.brevo.com"
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+# app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_USERNAME'] = "7b0831001@smtp-brevo.com"
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+app.config['MAIL_DEFAULT_SENDER'] = "chinazachukwunweike55@gmail.com"
+mail = Mail(app)
 
+# OpenAI API key
 client = OpenAI(
     api_key = os.getenv('API_KEY')
 )
@@ -43,14 +45,17 @@ question_options = {
     6: {"question": "Do you like lavender?", "answer":  ["Yes", "No", "I do not know"]},
 }
 
+# Route to index Page
 @app.route('/')
 def index():
     return render_template('index.html')
 
+# Rout to Chatbot Page
 @app.route('/chatbot')
 def chatbot():
     return render_template('chatbot.html')
 
+# Route to consultation Page
 @app.route('/book_consultation', methods=['POST','GET'])
 def consultation():
     if request.method == 'GET':
@@ -73,6 +78,7 @@ def consultation():
             if appointmentDate <= currentDate:
                 return render_template('consultation.html', errmessage="Invalid date format, Please pick a valid date")
 
+            # SQL Query to upload users details to consultation table on the database
             cursor = mysql.connection.cursor()
             sql = "INSERT INTO consultations (name, email, purpose, appointmentDate, appointmentTime) VALUES(%s,%s,%s,%s,%s)"
             values = (fullname,email,purpose, appointmentDate,time)
@@ -80,21 +86,44 @@ def consultation():
             mysql.connection.commit()
 
             cursor.close()
+
+            # Send message to user's email
             if upload_success:
-                # msg = Message(subject="Test Email", recipients=[email])
-                # msg.body = "Hello email"
-                # mail.send(msg)
-                return " sent successfully"
-                # return render_template('index.html', successmessage="Your consultation has been booked successfully.")
+                subject = "CONSULTATION BOOKING CONFRIMATION!!!"
+                body = f"Hello {fullname}, \n This email is to confirm your consultation booking appointment with our Menopause expert \n\n Time: 12pm - 13pm \n Date: 13th September, 2024. \n\n Kind regard,\n Shhh Menopause Team"
+                msg = Message(subject, recipients=[email])
+                msg.body = body
+                mail.send(msg)
+                print(email)
+
+                return render_template('index.html', successmessage="Your consultation has been booked successfully.")
         except Exception as error:
             return "Sorry an error occured",error
         # return redirect('/chatbot')
 
+# Dynamic Route to get response id and upload user's satisfactory rating
+@app.route('/response_rating/<int:response_id>', methods=['GET','POST'])
+def response_rating(response_id):
+    if request.method == 'GET':
+        return render_template('rating.html', response_id= response_id)
+    elif request.method == 'POST':
+        rating = request.form['rating']
+
+        cursor = mysql.connection.cursor()
+        rating_sql = "UPDATE responses SET satisfactory_rate = %s WHERE response_id = %s"
+        values = (rating, response_id)
+        rating_success = cursor.execute(rating_sql, values)
+        mysql.connection.commit()
+        cursor.close()
+        return render_template('consultation.html', successmessage="Rating successfully submitted")
+
+# route to send answer options to the frontend
 @app.route('/get_options', methods=['GET'])
 def get_options():
     # fetch questions from database and load each one into an empty dictionary
     return jsonify({"question_options": question_options, "length": len(question_options)})
 
+# Route to get user's response from the form
 @app.route('/get_response', methods=['POST'])
 def get_response():
     selectedOptions = request.json.get("selectedValues")
@@ -120,15 +149,17 @@ def get_response():
         chatbot_response = response.choices[0].message.content
         messages.append({"role": "assistant", "content": chatbot_response})
 
+        # SQL QUERY to send users selected options to the database
         cursor = mysql.connection.cursor()
         ressql = "INSERT INTO responses (question1_option, question2_option, question3_option, question4_option, question5_option, question6_option, chatbot_response,satisfactory_rate) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)"
         values = (age,menstrual_cycle,symptoms, concern, sleep_trouble, lavender,chatbot_response, '')
         response_success = cursor.execute(ressql, values)
         mysql.connection.commit()
+        response_id = cursor.lastrowid
         cursor.close()
         
         print("data has been inserted successfully")
-        return jsonify({"response": chatbot_response})
+        return jsonify({"response": chatbot_response, "response_id": response_id})
 
 
 if __name__ == '__main__':

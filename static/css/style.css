@@ -255,14 +255,21 @@ body{
 }
 
 /* Error Message */
-.errormessage{
+.msg{
     text-align: center;
-    background-color: #ff0000ab;
-    color: white;
     padding: 10px 0;
     font-weight: 500;
     margin: 10px 0;
     border-radius: 6px;
+}
+.errormessage{
+    background-color: #ff0000ab;
+    color: white;
+}
+
+.successmessage{
+    background-color: #a1d9a1;
+    color:green
 }
 
 .clickto_order{
@@ -287,3 +294,41 @@ body{
 .chatbot-selection-btns>a{
     text-decoration: none;
 }
+
+/* RATING PAGE */
+.rating_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 0;
+}
+.imagePoor{
+    margin:0 10px !important;
+}
+.rating_container input{
+    /* display: inline; */
+    margin-top: 0 !important;
+}
+.rating_container label{
+    width: 40px;
+    display: flex;
+    padding: 5px;
+}
+.rating_container label img{
+    width: 100%;
+}
+
+#imagePoor{
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+
+.rating_container input[type="radio"] {
+    display: none;
+  }
+
+  .rating_container input[type="radio"]:checked + label {
+    border: 2px solid #090b3a;
+    border-radius: 5px;
+    transition: .2s ease;
+  }

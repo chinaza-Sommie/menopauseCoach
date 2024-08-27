@@ -5,8 +5,14 @@
 {% endblock %}
 
 {% block body %}
-
+    {%if errmessage %}
+        <p class="msg errormessage">{{errmessage}}</p>
+    {% endif %}
+    {% if successmessage %}
+        <p class="msg successmessage">{{ successmessage }}</p>
+    {% endif %}
 <div class="heroSection">
+    
     <div class="heroText">
         <div id="italicText">Your Personal</div>
         <div id="boldText"> Menopausal Coach</div>

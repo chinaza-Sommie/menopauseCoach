@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Shhh... Menopasal Coach</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="consultaion-section">
+    
+    <form method="POST" action="/response_rating/{{ response_id }}">
+        <div> Are you satisfied with the response?</div>
+        {%if errmessage %}
+            <p class="errormessage">{{errmessage}}</p>
+        {% endif %}      
+        <div class="rating_container">
+            <div class="imagePoor"><input type="radio" name="rating" id="good" value="Good" />
+                <label for="good">
+                    <img src="{{ url_for('static', filename='images/thumbsup.svg') }}" alt="thumbsup"/>
+                </label>
+            </div>
+            <div id="imagePoor" class="imagePoor"><input type="radio" name="rating" id="poor" value="Poor" />
+                <label for="poor">
+                    <img src="{{ url_for('static', filename='images/thumbsdown.svg') }}" alt="thumbsup"/>
+                </label>
+            </div>
+        </div>
+        <input type="submit" name="submit" />
+
+    </form>
+</div>
+<script>
+    console.log(Form)
+</script>
+{% endblock %}
