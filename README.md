@@ -96,7 +96,7 @@ Follow these steps to set up and run the project on your local machine:
     ```
 
 2. Tables can be created in 2 ways:
-    1. import the db.sql file in this project directory.
+    1. import the menopause.sql file in this project directory.
     2. **Manually Create Tables**:
     - Run the following SQL commands to create the necessary tables:
 
