@@ -90,7 +90,7 @@ def consultation():
             # Send message to user's email
             if upload_success:
                 subject = "CONSULTATION BOOKING CONFRIMATION!!!"
-                body = f"Hello {fullname}, \n This email is to confirm your consultation booking appointment with our Menopause expert \n\n Time: 12pm - 13pm \n Date: 13th September, 2024. \n\n Kind regard,\n Shhh Menopause Team"
+                body = f"Hello {fullname}, \n This email is to confirm your consultation booking appointment with our Menopause expert \n\n Time: {time} \n Date: {appointmentDate}. \n\n Kind regard,\n Shhh Menopause Team"
                 msg = Message(subject, recipients=[email])
                 msg.body = body
                 mail.send(msg)
